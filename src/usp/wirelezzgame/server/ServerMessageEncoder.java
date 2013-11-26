@@ -1,4 +1,4 @@
-package usp.wirelezzgame.communication;
+package usp.wirelezzgame.server;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
 
 @SuppressWarnings("unchecked")
-public class ServerEncoder {
+public class ServerMessageEncoder {
 
 	public static String nomeServer(String nomeServidor){
 		int MessageCode = 0;
