@@ -44,4 +44,12 @@ public class Partida {
 		return id;
 	}
 
+	public List<Time> getTimes(){
+		return mTimes;
+	}
+	
+	public List<Area> getAreas(){
+		return mAreas;
+	}
+
 }

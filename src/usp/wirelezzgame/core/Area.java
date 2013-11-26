@@ -6,6 +6,12 @@ public abstract class Area {
 	protected double mLongitude;
 	protected double mRaio;
 	
+	public Area(double mLatitude, double mLongitude, double mRaio) {
+		this.mLatitude = mLatitude;
+		this.mLongitude = mLongitude;
+		this.mRaio = mRaio;
+	}
+
 	public void setID(int ID){
 		this.mID = ID;
 	}

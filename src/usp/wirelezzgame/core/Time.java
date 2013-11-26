@@ -39,12 +39,12 @@ public class Time {
 		this.mID = mID;
 	}
 	
-	public void addAreasCapturadas(){
-		this.mAreasCapturadas++;
+	public int addAreasCapturadas(){
+		return this.mAreasCapturadas++;
 	}
 	
-	public void subAreasCapturadas(){
-		this.mAreasCapturadas--;
+	public int subAreasCapturadas(){
+		return this.mAreasCapturadas--;
 	}
 	
 	public List<Jogador> getJogadores(){
@@ -52,7 +52,7 @@ public class Time {
 	}
 
 	public enum Cor {
-		AZUL, VERMELHO, AMARELO, VERDE
+		VERMELHO, AZUL, AMARELO, VERDE
 	}
 	
 }
