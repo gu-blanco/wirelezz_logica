@@ -2,14 +2,16 @@ package usp.wirelezzgame.server;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import usp.wirelezzgame.core.Area;
-import usp.wirelezzgame.core.AreaConquista;
 import usp.wirelezzgame.core.Jogador;
 import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
+import usp.wirelezzgame.core.area.Area;
+import usp.wirelezzgame.core.area.AreaConquista;
 
 @SuppressWarnings("unchecked")
 public class ServerMessageEncoder {
@@ -125,58 +127,6 @@ public class ServerMessageEncoder {
 			obj.put("defesa", new Integer(ac.getNivelDefesa()));
 		}		
 		return obj;
-	}
-	
-	public static void main(String[] args) {
-		String s = nomeServer("The Wirelezz Game - USP Server");
-		System.out.println(s);
-		
-		Partida p = new Partida();
-
-		Time t = new Time("Alpha", Time.Cor.VERMELHO);		
-		int tid = p.addTime(t);
-
-		Jogador j = new Jogador("Bruno", "Bruno Orlandi", "brorlandi");
-		p.addJogador(j,tid);
-		j = new Jogador("Gustavo", "Gustavo Blanco", "gu_blanco");
-		p.addJogador(j,tid);
-
-		t = new Time("Bravo", Time.Cor.AZUL);		
-		tid = p.addTime(t);
-
-		j = new Jogador("Marcus", "Marcus da Silva", "mogsilva");
-		p.addJogador(j,tid);
-		j = new Jogador("Nihey", "Nihey Takizawa", "nihey");
-		p.addJogador(j,tid);
-		
-		s = timesData(p.getTimes());
-		System.out.println("-----");
-		System.out.println(s);
-		
-		AreaConquista a = new AreaConquista(1.0, 1.0, 1.0, 5);
-		p.addArea(a);
-		a.alterarNivelDefesa(15);
-		a.alterarNivelDefesa(-10);
-		a.setTimeID(t.getID());
-		
-		a = new AreaConquista(2.0, 2.0, 2.0, 5);
-		p.addArea(a);
-		a = new AreaConquista(3.0, 3.0, 3.0, 5);
-		p.addArea(a);
-		
-		s = areasData(p.getAreas());		
-		System.out.println("-----");
-		System.out.println(s);		
-		
-		s = jogadorIdTime(j);		
-		System.out.println("-----");
-		System.out.println(s);
-		
-		s = novoJogador(j);
-		System.out.println("-----");
-		System.out.println(s);
-		
-		
 	}
 
 }

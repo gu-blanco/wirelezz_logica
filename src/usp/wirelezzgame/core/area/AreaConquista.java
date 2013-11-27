@@ -1,4 +1,4 @@
-package usp.wirelezzgame.core;
+package usp.wirelezzgame.core.area;
 
 public class AreaConquista extends Area {
 	

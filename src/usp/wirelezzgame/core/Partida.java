@@ -3,6 +3,8 @@ package usp.wirelezzgame.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import usp.wirelezzgame.core.area.Area;
+
 public class Partida {
 	
 	private List<Time> mTimes;

@@ -1,4 +1,4 @@
-package usp.wirelezzgame.core;
+package usp.wirelezzgame.core.area;
 
 public abstract class Area {
 	protected int mID;
