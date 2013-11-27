@@ -1,6 +1,16 @@
 package usp.wirelezzgame.core.acao;
 
-public class AcaoRecuperarRecursos implements AcaoInterface{
+import usp.wirelezzgame.core.Jogador;
+import usp.wirelezzgame.core.area.AreaConquista;
+
+public class AcaoRecuperarRecursos  extends AcaoAbstract{
+	
+	private AreaConquista mArea;
+
+	public AcaoRecuperarRecursos(Jogador j, AreaConquista a) {
+		super(j);
+		mArea = a;
+	}
 
 	@Override
 	public boolean fazerAcao() {
