@@ -7,19 +7,16 @@ import java.net.URLEncoder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import usp.wirelezzgame.core.Jogador;
-import usp.wirelezzgame.core.acao.AcaoInterface;
+import usp.wirelezzgame.core.acao.AcaoAbstract;
 
 public class Captcha {
 	
 	private int mID;
 	private String mViewstate;
 	private String mImage;
-	private AcaoInterface mAcao;
-	private Jogador mJogador;
+	private AcaoAbstract mAcao;
 	
-	public Captcha(Jogador j, AcaoInterface acao) {
-		mJogador = j;
+	public Captcha(AcaoAbstract acao) {
 		mAcao = acao;
 		try {
 			String json = UrlRequest.getContents("http://wirelezzcaptcha.herokuapp.com/get_captcha.php");
@@ -47,7 +44,7 @@ public class Captcha {
 				json = UrlRequest.getContents(
 "http://wirelezzcaptcha.herokuapp.com/answer_captcha.php?viewstate="+ URLEncoder.encode(mViewstate, "UTF-8") + 
 "&captcha=" + URLEncoder.encode(resposta, "UTF-8")+
-"&jogador=" + URLEncoder.encode(mJogador.getNomeCompleto(), "UTF-8") );
+"&jogador=" + URLEncoder.encode(mAcao.getJogador().getNomeCompleto(), "UTF-8") );
 			
 			JSONParser parser=new JSONParser();
 			Object obj=parser.parse(json);
@@ -67,10 +64,8 @@ public class Captcha {
 				throw new Exception((String) request.get("message"));
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -89,10 +84,10 @@ public class Captcha {
 	public String getViewstate() {
 		return mViewstate;
 	}
-	public AcaoInterface getAcao() {
+	public AcaoAbstract getAcao() {
 		return mAcao;
 	}
-	public void setAcao(AcaoInterface mAcao) {
+	public void setAcao(AcaoAbstract mAcao) {
 		this.mAcao = mAcao;
 	}	
 

@@ -2,13 +2,10 @@ package usp.wirelezzgame.server;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import usp.wirelezzgame.core.Jogador;
-import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
 import usp.wirelezzgame.core.area.Area;
 import usp.wirelezzgame.core.area.AreaConquista;

@@ -142,7 +142,7 @@ class ImageComponent extends JComponent{
             //System.out.println(imgstr);
              */
         	
-    		captcha = new Captcha(new Jogador("Bruno", "TeStE", "aaa"),new AcaoAtacarArea());
+    		captcha = new Captcha(new AcaoAtacarArea(new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista(1.0, 1.0, 5.0, 10)));
     		System.out.println("Img: "+captcha.getImage());
     		System.out.println("Viewstate: "+captcha.getViewstate());
             image = decodeToImage(captcha.getImage());
