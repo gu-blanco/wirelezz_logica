@@ -14,8 +14,11 @@ public class AcaoDefenderArea extends AcaoAbstract{
 
 	@Override
 	public boolean fazerAcao() {
-		// TODO Auto-generated method stub
+		if(mArea.getTimeID() == super.getJogador().getTime()){//Verifica se a base é a mesma do time jogador
+			int defesa = mArea.alterarNivelDefesa(8);//Aumenta defesa em 8
+			super.getJogador().alterarRecurso(-1);//Decrementa 1 ponto de recurso do jogador
+			return true;
+		}			
 		return false;
 	}
-
 }
