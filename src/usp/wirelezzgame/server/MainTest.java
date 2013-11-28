@@ -25,6 +25,16 @@ import usp.wirelezzgame.core.captcha.Captcha;
 public class MainTest {
 	
 	public static void main(String[] args) {
+		
+		
+	}
+
+	public static void client(){
+		
+		//TODO tests do encoding do cliente
+		
+	}
+	public static void server(){
 		String s = ServerMessageEncoder.nomeServer("The Wirelezz Game - USP Server");
 		System.out.println(s);
 		
@@ -47,7 +57,7 @@ public class MainTest {
 		p.addJogador(j,tid);
 		
 		s = ServerMessageEncoder.timesData(p.getTimes());
-		System.out.println("-----");
+		System.out.println("--timesData---");
 		System.out.println(s);
 		
 		AreaConquista a = new AreaConquista(1.0, 1.0, 1.0, 5);
@@ -62,20 +72,19 @@ public class MainTest {
 		p.addArea(a);
 		
 		s = ServerMessageEncoder.areasData(p.getAreas());		
-		System.out.println("-----");
+		System.out.println("---areasData--");
 		System.out.println(s);		
 		
 		s = ServerMessageEncoder.jogadorIdTime(j);		
-		System.out.println("-----");
+		System.out.println("---jogadorIdTime--");
 		System.out.println(s);
 		
 		s = ServerMessageEncoder.novoJogador(j);
-		System.out.println("-----");
+		System.out.println("--novoJogador--");
 		System.out.println(s);
 
-		System.out.println("-----");
 		
-		
+		/*
 		EventQueue.invokeLater(new Runnable()
         {
             public void run(){
@@ -102,7 +111,25 @@ public class MainTest {
             }
         }
         );
+        
+        */
 		
+
+		System.out.println("---mensagemResultadoCaptcha--");
+		System.out.println(ServerMessageEncoder.mensagemResultadoCaptcha(true));
+		System.out.println("---mensagemPontosRecurso--");
+		j.setPontosRecurso(8);
+		System.out.println(ServerMessageEncoder.mensagemPontosRecurso(j,ServerMessageEncoder.GASTOU_PONTOS));
+		System.out.println("--mensagemAlteraDefesaArea---");
+		System.out.println(ServerMessageEncoder.mensagemAlteraDefesaArea(a, j, ServerMessageEncoder.AREA_ATACADA));
+		System.out.println("--mensagemAreaConquistada---");
+		System.out.println(ServerMessageEncoder.mensagemAreaConquistada(a,j));
+		System.out.println("--mensagemVitoriaTime---");
+		System.out.println(ServerMessageEncoder.mensagemVitoriaTime(t));
+		System.out.println("--mensagemJogadorDesconectou---");
+		System.out.println(ServerMessageEncoder.mensagemJogadorDesconectou(j));
+		System.out.println("--mensagemChat---");
+		System.out.println(ServerMessageEncoder.mensagemChat(j,ServerMessageEncoder.CHAT_TODOS,"Ze Chat"));
 	}
 }
 @SuppressWarnings("serial")
