@@ -26,7 +26,7 @@ public class Time {
 		return mNome;
 	}
 	
-	protected boolean addJogador(Jogador j){
+	public boolean addJogador(Jogador j){
 		j.setTime(mID);
 		return mJogadores.add(j);
 	}

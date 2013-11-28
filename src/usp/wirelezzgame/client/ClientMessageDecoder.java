@@ -11,6 +11,8 @@ import org.json.simple.JSONValue;
 import usp.wirelezzgame.core.Jogador;
 import usp.wirelezzgame.core.Time;
 import usp.wirelezzgame.core.Time.Cor;
+import usp.wirelezzgame.core.area.Area;
+import usp.wirelezzgame.core.area.AreaConquista;
 
 public class ClientMessageDecoder {
 	
@@ -36,6 +38,9 @@ public class ClientMessageDecoder {
 			case 2:
 				timesData(data);
 			break;
+			case 3:
+				areasData(data);
+			break;
 		}
 	}
 	
@@ -55,6 +60,37 @@ public class ClientMessageDecoder {
 		}
 		mCallback.timesData(times);
 	}
+	
+	private void areasData(JSONAware data){
+		JSONArray areasArray = (JSONArray) data;
+		List<Area> areas = new ArrayList<Area>();
+		Area a;
+		for(int i=0;i < areasArray.size(); i++){
+			a = parseArea((JSONObject) areasArray.get(i));
+			areas.add(a);
+		}
+		mCallback.areasData(areas);
+	}
+
+	private Area parseArea(JSONObject obj) {
+		int idArea = new Long((long) obj.get("idArea")).intValue();
+		double latitude = (double) obj.get("latitude");
+		double longitude = (double) obj.get("longitude");
+		double raio = (double) obj.get("raio");
+		String tipo = (String) obj.get("tipo");
+		
+		Area a;
+		
+		if(tipo.equals(AreaConquista.TIPO)){
+			int defesa = new Long((long) obj.get("defesa")).intValue();
+			AreaConquista ac = new AreaConquista(latitude, longitude, raio, defesa);
+			int idTime = new Long((long) obj.get("idTime")).intValue();
+			ac.setTimeID(idTime);
+			a = (Area) ac;
+		}		
+		
+		return a;
+	}
 
 	private Time parseTime(JSONObject obj) {
 		String nome = (String) obj.get("nomeTime");
@@ -65,18 +101,22 @@ public class ClientMessageDecoder {
 		JSONArray jogadoresArray = (JSONArray) obj.get("jogadores");
 		Jogador jogador;
 
-		List<Jogador> js = new ArrayList<Jogador>();
 		for(int i=0;i < jogadoresArray.size(); i++){
 			jogador = parseJogador((JSONObject) jogadoresArray.get(i));
-			js.add(jogador);
+			t.addJogador(jogador);
 		}
-		
 		return t;
 	}
 
-	private Jogador parseJogador(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		return null;
+	private Jogador parseJogador(JSONObject obj) {
+		Jogador j;
+		int id = new Long((long) obj.get("idJogador")).intValue();
+		String nome = (String) obj.get("nomeJogador");
+		String nomeCompleto = (String) obj.get("nomeCompleto");
+		String fbid = (String) obj.get("facebookID");
+		j = new Jogador(nome, nomeCompleto, fbid);
+		j.setID(id);
+		return j;
 	}
 
 }

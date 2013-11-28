@@ -27,7 +27,7 @@ import usp.wirelezzgame.server.ServerMessageEncoder;
 public class MainTest {
 	
 	public static void main(String[] args) {
-		client();
+		server();
 		
 	}
 
@@ -59,40 +59,42 @@ public class MainTest {
 		Partida p = new Partida();
 
 		Time t = new Time("Alpha", Time.Cor.VERMELHO);		
-		int tid = p.addTime(t);
+		int tid = p.addNewTime(t);
 
 		Jogador j = new Jogador("Bruno", "Bruno Orlandi", "brorlandi");
-		p.addJogador(j,tid);
+		p.addNewJogador(j,tid);
 		j = new Jogador("Gustavo", "Gustavo Blanco", "gu_blanco");
-		p.addJogador(j,tid);
+		p.addNewJogador(j,tid);
 
 		t = new Time("Bravo", Time.Cor.AZUL);		
-		tid = p.addTime(t);
+		tid = p.addNewTime(t);
 
 		j = new Jogador("Marcus", "Marcus da Silva", "mogsilva");
-		p.addJogador(j,tid);
+		p.addNewJogador(j,tid);
 		j = new Jogador("Nihey", "Nihey Takizawa", "nihey");
-		p.addJogador(j,tid);
+		p.addNewJogador(j,tid);
 		
 		s = ServerMessageEncoder.timesData(p.getTimes());
 		System.out.println("--timesData---");
 		System.out.println(s);
+		cmd.parse(s);
 		
 		AreaConquista a = new AreaConquista(1.0, 1.0, 1.0, 5);
-		p.addArea(a);
+		p.addNewArea(a);
 		a.alterarNivelDefesa(15);
 		a.alterarNivelDefesa(-10);
 		a.setTimeID(t.getID());
 		
 		a = new AreaConquista(2.0, 2.0, 2.0, 5);
-		p.addArea(a);
+		p.addNewArea(a);
 		a = new AreaConquista(3.0, 3.0, 3.0, 5);
-		p.addArea(a);
+		p.addNewArea(a);
 		
 		s = ServerMessageEncoder.areasData(p.getAreas());		
 		System.out.println("---areasData--");
 		System.out.println(s);		
-		
+
+		/*
 		s = ServerMessageEncoder.jogadorIdTime(j);		
 		System.out.println("---jogadorIdTime--");
 		System.out.println(s);
@@ -132,7 +134,7 @@ public class MainTest {
         
         */
 		
-
+/*
 		System.out.println("---mensagemResultadoCaptcha--");
 		System.out.println(ServerMessageEncoder.mensagemResultadoCaptcha(true));
 		System.out.println("---mensagemPontosRecurso--");
@@ -148,6 +150,7 @@ public class MainTest {
 		System.out.println(ServerMessageEncoder.mensagemJogadorDesconectou(j));
 		System.out.println("--mensagemChat---");
 		System.out.println(ServerMessageEncoder.mensagemChat(j,ServerMessageEncoder.CHAT_TODOS,"Ze Chat"));
+		*/
 	}
 }
 @SuppressWarnings("serial")

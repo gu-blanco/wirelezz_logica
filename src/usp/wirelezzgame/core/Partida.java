@@ -24,15 +24,17 @@ public class Partida {
 		mLastTimeID = 0;
 		mLastAreaID = 0;
 	}
-	
-	public int addTime(Time t){
+
+	// Adiciona no servidor
+	public int addNewTime(Time t){
 		int id = mLastTimeID++;
 		t.setID(id);
 		mTimes.add(t);
 		return id;
 	}
-	
-	public int addJogador(Jogador j, int timeId){
+
+	// Adiciona no servidor
+	public int addNewJogador(Jogador j, int timeId){
 		int id = mLastJogadorID++;
 		Time t = mTimes.get(timeId);
 		t.addJogador(j);		
@@ -41,11 +43,28 @@ public class Partida {
 		return id;
 	}
 	
-	public int addArea(Area a){
+	// Adiciona no servidor
+	public int addNewArea(Area a){
 		int id = mLastAreaID++;
 		a.setID(id);
 		mAreas.add(a);
 		return id;
+	}
+
+	// Apenas no cliente, quando recebe os dados dos times e jogadores
+	public void setTimes(List<Time> lt){
+		mTimes = lt;
+		for(Time t:lt){
+			List<Jogador> js = t.getJogadores();
+			for(Jogador j : js){
+				mJogadores.add(j);
+			}
+		}
+	}
+
+	// Apenas no cliente, quando recebe os dados das areas
+	public void setAreas(List<Area> la){
+		mAreas = la;
 	}
 
 	public List<Time> getTimes(){
