@@ -14,7 +14,10 @@ public class AcaoRecuperarRecursos  extends AcaoAbstract{
 
 	@Override
 	public boolean fazerAcao() {
-		// TODO Auto-generated method stub
+		if(mArea.getTimeID() == super.getJogador().getTime()){//Verifica se a base é a mesma do time do jogador
+			super.getJogador().alterarRecurso(5);//Aumenta em 5 pontos de recurso do jogador
+			return true;
+		}
 		return false;
 	}
 

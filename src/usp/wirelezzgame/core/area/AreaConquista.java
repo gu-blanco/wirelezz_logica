@@ -42,4 +42,5 @@ public class AreaConquista extends Area {
 		mNivelDefesa = mDefesaAcumulada/2;
 		mDefesaAcumulada = mNivelDefesa;
 	}
+	
 }
