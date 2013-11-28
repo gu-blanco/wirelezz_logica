@@ -13,8 +13,8 @@ public class AcaoAtacarArea extends AcaoAbstract{
 	}
 
 	@Override
-	public boolean fazerAcao() {//Esse mÈtodo È executado apÛs o captcha ser aceito
-		if(mArea.getTimeID() != super.getJogador().getTime()){//Verifica se o jogador est· atacando uma area do time advers·rio
+	public boolean fazerAcao() {//Esse m√©todo √© executado ap√≥s o captcha ser aceito
+		if(mArea.getTimeID() != super.getJogador().getTime()){//Verifica se o jogador est√° atacando uma area do time advers√°rio
 			int defesa = mArea.alterarNivelDefesa(-5);//Decrementa defesa em 5
 			super.getJogador().alterarRecurso(-1);//Decrementa recursos do jogador em 1
 			if(defesa <= 0){//Verifica se a area foi conquistada(nivel de defesa zerou)
