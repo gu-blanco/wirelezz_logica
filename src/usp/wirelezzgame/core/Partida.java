@@ -11,7 +11,7 @@ public class Partida {
 	private List<Time> mTimes;
 	private List<Jogador> mJogadores;
 	private List<Area> mAreas;
-	//Guardam os últimos ID criados para jogador, time e area. Gera números de 1 até N
+	//Guardam os Ãºltimos ID criados para jogador, time e area. Gera nÃºmeros de 1 atÃ© N
 	private int mLastJogadorID;
 	private int mLastTimeID;
 	private int mLastAreaID;
@@ -61,11 +61,11 @@ public class Partida {
 	}
 	
 	public Time getTimeById(int id){
-		return mTimes.get(id-1);//Inicia na posição 0		
+		return mTimes.get(id-1);//Inicia na posiÃ§Ã£o 0		
 	}
 	
 	public Area getAreaById(int id){
-		return mAreas.get(id-1);//Inicia na posição 0
+		return mAreas.get(id-1);//Inicia na posiÃ§Ã£o 0
 	}
 	
 	public Jogador getJogadorById(int id){
@@ -89,9 +89,9 @@ public class Partida {
 		aux = 0;
 		
 		while(aux < mAreas.size()){
-			if(mAreas.get(aux) instanceof AreaConquista){//Verifica se é area de conquista
+			if(mAreas.get(aux) instanceof AreaConquista){//Verifica se Ã© area de conquista
 				AreaConquista ac = (AreaConquista)mAreas.get(aux);
-				if(ac.getTimeID() != -1){//Verifica se a base já foi conquistada por algum time
+				if(ac.getTimeID() != -1){//Verifica se a base jÃ¡ foi conquistada por algum time
 					placar[ac.getTimeID()]++;//Incrementa o placar daquele time
 				}					
 			}
@@ -100,13 +100,13 @@ public class Partida {
 		return placar;
 	}
 	
-	//Método que verifica se a partida acabou (time capturou todas as bases)	
+	//MÃ©todo que verifica se a partida acabou (time capturou todas as bases)	
 	public boolean checkFimDeJogo(){
 		int[] placar;
 		int aux  = 0;
 		placar = getPlacar();//recebe placar
 		while(aux < mAreas.size()){
-			if(placar[aux] == mAreas.size()){//verifica se o time na posição aux capturou todas as bases
+			if(placar[aux] == mAreas.size()){//verifica se o time na posiÃ§Ã£o aux capturou todas as bases
 				return true;
 			}
 			aux++;
