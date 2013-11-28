@@ -1,6 +1,5 @@
-package usp.wirelezzgame.server;
+package usp.wirelezzgame.test;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -11,32 +10,51 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import usp.wirelezzgame.client.ClientMessageDecoder;
+import usp.wirelezzgame.client.ClientMessageEncoder;
 import usp.wirelezzgame.core.Jogador;
 import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
 import usp.wirelezzgame.core.acao.AcaoAtacarArea;
+import usp.wirelezzgame.core.area.Area;
 import usp.wirelezzgame.core.area.AreaConquista;
 import usp.wirelezzgame.core.captcha.Captcha;
+import usp.wirelezzgame.server.ServerMessageEncoder;
 
 public class MainTest {
 	
 	public static void main(String[] args) {
-		
+		client();
 		
 	}
 
 	public static void client(){
-		
-		//TODO tests do encoding do cliente
+
+		System.out.println("---dadosJogador--");
+		System.out.println(ClientMessageEncoder.dadosJogador("Bruno","Bruno Orlandi","brorlandi"));
+		System.out.println("---timeJogador--");
+		System.out.println(ClientMessageEncoder.timeJogador(0));
+		System.out.println("---interagirArea--");
+		System.out.println(ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.ATACAR_AREA));
+		System.out.println("---responderCaptcha--");
+		System.out.println(ClientMessageEncoder.responderCaptcha(0, "bla bla"));
+		System.out.println("---responderCaptcha--");
+		System.out.println(ClientMessageEncoder.mensagemChatTodos("Ze chat"));
+		System.out.println("---responderCaptcha--");
+		System.out.println(ClientMessageEncoder.mensagemChatTime("Ze chat"));
 		
 	}
 	public static void server(){
 		String s = ServerMessageEncoder.nomeServer("The Wirelezz Game - USP Server");
 		System.out.println(s);
+		
+		ClientCallback cc = new ClientCallback();
+		ClientMessageDecoder cmd = new ClientMessageDecoder(cc);
+		cmd.parse(s);
+		
 		
 		Partida p = new Partida();
 

@@ -12,10 +12,12 @@ public class ClientMessageEncoder {
 	public static final int ATACAR_AREA = 1;
 	public static final int RECUPERAR_PONTOS_AREA = 2;
 
-	public static String nomeJogador(String nome){
+	public static String dadosJogador(String primeiroNome,String nomeCompleto, String facebookID){
 		
 		JSONObject data = new JSONObject();
-		data.put("nomeJogador", nome);
+		data.put("nomeJogador", primeiroNome);
+		data.put("nomeCompleto", nomeCompleto);
+		data.put("facebookID", facebookID);
 
 		return toJsonMessage(1,data);
 	}
@@ -43,7 +45,7 @@ public class ClientMessageEncoder {
 		
 		JSONObject data = new JSONObject();
 		data.put("idCaptcha", new Integer(idCaptcha));
-		data.put("resposta", idCaptcha);
+		data.put("resposta", resposta);
 
 		return toJsonMessage(9,data);
 	}
