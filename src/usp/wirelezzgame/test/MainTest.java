@@ -25,29 +25,50 @@ import usp.wirelezzgame.core.acao.AcaoCallback;
 import usp.wirelezzgame.core.area.Area;
 import usp.wirelezzgame.core.area.AreaConquista;
 import usp.wirelezzgame.core.captcha.Captcha;
+import usp.wirelezzgame.server.ServerMessageCallback;
+import usp.wirelezzgame.server.ServerMessageDecoder;
 import usp.wirelezzgame.server.ServerMessageEncoder;
 
 public class MainTest {
 	
 	public static void main(String[] args) {
-		server();
+		client();
 		
 	}
 
 	public static void client(){
-
+		String s;
+		ServerMessageCallback smc = new ServerCallback();
+		ServerMessageDecoder smd = new ServerMessageDecoder(smc);
 		System.out.println("---dadosJogador--");
-		System.out.println(ClientMessageEncoder.dadosJogador("Bruno","Bruno Orlandi","brorlandi"));
+		s = ClientMessageEncoder.dadosJogador("Bruno","Bruno Orlandi","brorlandi");
+		System.out.println(s);
+		smd.parse(s);
 		System.out.println("---timeJogador--");
-		System.out.println(ClientMessageEncoder.timeJogador(0));
+		s = ClientMessageEncoder.timeJogador(0);
+		System.out.println(s);
+		smd.parse(s);
 		System.out.println("---interagirArea--");
-		System.out.println(ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.ATACAR_AREA));
+		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.ATACAR_AREA);
+		System.out.println(s);
+		smd.parse(s);
+		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.DEFENDER_AREA);
+		smd.parse(s);
+		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.RECUPERAR_PONTOS_AREA);
+		smd.parse(s);
 		System.out.println("---responderCaptcha--");
-		System.out.println(ClientMessageEncoder.responderCaptcha(0, "bla bla"));
+		s = ClientMessageEncoder.responderCaptcha(0, "bla bla");
+		System.out.println(s);
+		smd.parse(s);
 		System.out.println("---responderCaptcha--");
-		System.out.println(ClientMessageEncoder.mensagemChatTodos("Ze chat"));
+		s = ClientMessageEncoder.mensagemChatTodos("Ze chat");
+		System.out.println(s);
+		smd.parse(s);
 		System.out.println("---responderCaptcha--");
-		System.out.println(ClientMessageEncoder.mensagemChatTime("Ze chat"));
+		s = ClientMessageEncoder.mensagemChatTime("Ze chat");
+		System.out.println(s);
+		smd.parse(s);
+		
 		
 	}
 	public static void server(){

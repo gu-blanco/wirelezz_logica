@@ -24,21 +24,26 @@ public class ServerMessageDecoder {
 		switch(code){
 			case 1:
 				dadosJogador(data);
+				break;
 			case 4:
 				timeJogador(data);
+				break;
 			case 7:
 				interagirArea(data);
+				break;
 			case 9:
 				responderCaptcha(data);
+				break;
 			case 17:
 				mensagemChatTodos(data);
+				break;
 			case 18:
 				mensagemChatTime(data);
 			break;
 		}
 	}
 	
-	//Recebe as informações do jogador e retorna um objeto jogador com esses dados
+	//Recebe as informações do jogador
 	public void dadosJogador(JSONAware data){
 		JSONObject obj = (JSONObject)data;
 		
@@ -53,7 +58,7 @@ public class ServerMessageDecoder {
 	public void timeJogador(JSONAware data){
 		JSONObject obj = (JSONObject)data;
 		
-		Integer idTime = (Integer) obj.get("idTime");
+		int idTime = new Long((long)obj.get("idTime")).intValue();
 		
 		mCallback.timeJogador(idTime);
 	}
@@ -62,10 +67,10 @@ public class ServerMessageDecoder {
 	public void interagirArea(JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
-		Integer idArea = (Integer) obj.get("idArea");
-		Integer latitude = (Integer) obj.get("latitude");
-		Integer longitude = (Integer) obj.get("longitude");
-		Integer acao = (Integer) obj.get("acao");
+		int idArea = new Long((long)obj.get("idArea")).intValue();
+		double latitude = (double) obj.get("latitude");
+		double longitude = (double) obj.get("longitude");
+		int acao = new Long((long)obj.get("acao")).intValue();
 		
 		mCallback.interagirArea(idArea, latitude, longitude, acao);		
 	}
@@ -74,7 +79,7 @@ public class ServerMessageDecoder {
 	public void responderCaptcha(JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
-		Integer idCaptcha = (Integer) obj.get("idCaptcha");
+		int idCaptcha = new Long((long)obj.get("idCaptcha")).intValue();
 		String resposta = (String) obj.get("resposta");
 		
 		mCallback.responderCaptcha(idCaptcha, resposta);
