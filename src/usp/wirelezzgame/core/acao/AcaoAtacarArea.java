@@ -6,10 +6,12 @@ import usp.wirelezzgame.core.area.AreaConquista;
 public class AcaoAtacarArea extends AcaoAbstract{
 
 	private AreaConquista mArea;
+	private AcaoCallback mCallback;
 	
-	public AcaoAtacarArea(Jogador j, AreaConquista a) {
+	public AcaoAtacarArea(Jogador j, AreaConquista a, AcaoCallback ac) {
 		super(j);
 		mArea = a;
+		mCallback = ac;
 	}
 
 	@Override
@@ -18,7 +20,11 @@ public class AcaoAtacarArea extends AcaoAbstract{
 			int defesa = mArea.alterarNivelDefesa(-5);//Decrementa defesa em 5
 			super.getJogador().alterarRecurso(-1);//Decrementa recursos do jogador em 1
 			if(defesa <= 0){//Verifica se a area foi conquistada(nivel de defesa zerou)
-				mArea.setTimeID(super.getJogador().getTime());//Troca time dono da base
+				mArea.conquistaTimeID(super.getJogador().getTime());//Troca time dono da base
+				mCallback.areaConquistada(mArea, super.getJogador());
+			}
+			else{
+				mCallback.areaAtacada(mArea, super.getJogador());
 			}
 			return true;
 		}

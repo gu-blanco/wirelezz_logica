@@ -1,5 +1,6 @@
 package usp.wirelezzgame.test;
 
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -19,6 +21,7 @@ import usp.wirelezzgame.core.Jogador;
 import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
 import usp.wirelezzgame.core.acao.AcaoAtacarArea;
+import usp.wirelezzgame.core.acao.AcaoCallback;
 import usp.wirelezzgame.core.area.Area;
 import usp.wirelezzgame.core.area.AreaConquista;
 import usp.wirelezzgame.core.captcha.Captcha;
@@ -92,16 +95,19 @@ public class MainTest {
 		
 		s = ServerMessageEncoder.areasData(p.getAreas());		
 		System.out.println("---areasData--");
-		System.out.println(s);		
+		System.out.println(s);
+		cmd.parse(s);
 
-		/*
 		s = ServerMessageEncoder.jogadorIdTime(j);		
 		System.out.println("---jogadorIdTime--");
 		System.out.println(s);
+		cmd.parse(s);
+		
 		
 		s = ServerMessageEncoder.novoJogador(j);
 		System.out.println("--novoJogador--");
 		System.out.println(s);
+		cmd.parse(s);
 
 		
 		/*
@@ -131,26 +137,97 @@ public class MainTest {
             }
         }
         );
-        
         */
+		/*
+		 * 
+		Captcha captcha = new Captcha(new AcaoAtacarArea(new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista(1.0, 1.0, 5.0, 10), new AcaoCallback() {
+			
+			@Override
+			public void recuperouPontosRecurso(Jogador j) {
+				System.out.println("recuperouPontosRecurso");
+				
+			}
+			
+			@Override
+			public void areaDefendida(Area a, Jogador j) {
+				System.out.println("areaDefendida");
+				
+			}
+			
+			@Override
+			public void areaConquistada(Area a, Jogador j) {
+				System.out.println("areaConquistada");
+				
+			}
+			
+			@Override
+			public void areaAtacada(Area a, Jogador j) {
+				System.out.println("areaAtacada");
+			}
+		}));
 		
-/*
+		System.out.println("--Captcha--");
+		s = ServerMessageEncoder.mensagemCaptcha(captcha);
+		cmd.parse(s);
+		
+		boolean b = false;
+		try {
+			b = captcha.respostaCaptcha("aaa");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("---mensagemResultadoCaptcha--");
-		System.out.println(ServerMessageEncoder.mensagemResultadoCaptcha(true));
+		s = ServerMessageEncoder.mensagemResultadoCaptcha(b);
+		cmd.parse(s);
+		
+		System.out.println("Img: "+captcha.getImage());
+		System.out.println("Viewstate: "+captcha.getViewstate());
+		*/
+        
+        
+		
 		System.out.println("---mensagemPontosRecurso--");
 		j.setPontosRecurso(8);
-		System.out.println(ServerMessageEncoder.mensagemPontosRecurso(j,ServerMessageEncoder.GASTOU_PONTOS));
+		s = ServerMessageEncoder.mensagemPontosRecurso(j,ServerMessageEncoder.GASTOU_PONTOS);
+		System.out.println(s);
+		cmd.parse(s);
+		j.setPontosRecurso(13);
+		s = ServerMessageEncoder.mensagemPontosRecurso(j,ServerMessageEncoder.RECUPEROU_PONTOS);
+		System.out.println(s);
+		cmd.parse(s);
+		
+		
+
 		System.out.println("--mensagemAlteraDefesaArea---");
-		System.out.println(ServerMessageEncoder.mensagemAlteraDefesaArea(a, j, ServerMessageEncoder.AREA_ATACADA));
+		s=ServerMessageEncoder.mensagemAlteraDefesaArea(a, j, ServerMessageEncoder.AREA_ATACADA);
+		System.out.println(s);
+		cmd.parse(s);
+		s=ServerMessageEncoder.mensagemAlteraDefesaArea(a, j, ServerMessageEncoder.AREA_DEFENDIDA);
+		System.out.println(s);
+		cmd.parse(s);
+		
+		a.setTimeID(1);
 		System.out.println("--mensagemAreaConquistada---");
-		System.out.println(ServerMessageEncoder.mensagemAreaConquistada(a,j));
+		s=ServerMessageEncoder.mensagemAreaConquistada(a,j);
+		System.out.println(s);
+		cmd.parse(s);
 		System.out.println("--mensagemVitoriaTime---");
-		System.out.println(ServerMessageEncoder.mensagemVitoriaTime(t));
+		s=ServerMessageEncoder.mensagemVitoriaTime(t);
+		System.out.println(s);
+		cmd.parse(s);
 		System.out.println("--mensagemJogadorDesconectou---");
-		System.out.println(ServerMessageEncoder.mensagemJogadorDesconectou(j));
+		s=ServerMessageEncoder.mensagemJogadorDesconectou(j);
+		System.out.println(s);
+		cmd.parse(s);
 		System.out.println("--mensagemChat---");
-		System.out.println(ServerMessageEncoder.mensagemChat(j,ServerMessageEncoder.CHAT_TODOS,"Ze Chat"));
-		*/
+		s=ServerMessageEncoder.mensagemChat(j,ServerMessageEncoder.CHAT_TODOS,"Ze Chat");
+		System.out.println(s);
+		cmd.parse(s);
+		s=ServerMessageEncoder.mensagemChat(j,ServerMessageEncoder.CHAT_TIME,"Ze Chat");
+		System.out.println(s);
+		cmd.parse(s);
+		
 	}
 }
 @SuppressWarnings("serial")
@@ -190,7 +267,32 @@ class ImageComponent extends JComponent{
             //System.out.println(imgstr);
              */
         	
-    		captcha = new Captcha(new AcaoAtacarArea(new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista(1.0, 1.0, 5.0, 10)));
+    		captcha = new Captcha(new AcaoAtacarArea(new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista(1.0, 1.0, 5.0, 10), new AcaoCallback() {
+				
+				@Override
+				public void recuperouPontosRecurso(Jogador j) {
+					System.out.println("recuperouPontosRecurso");
+					
+				}
+				
+				@Override
+				public void areaDefendida(Area a, Jogador j) {
+					System.out.println("areaDefendida");
+					
+				}
+				
+				@Override
+				public void areaConquistada(Area a, Jogador j) {
+					System.out.println("areaConquistada");
+					
+				}
+				
+				@Override
+				public void areaAtacada(Area a, Jogador j) {
+					System.out.println("areaAtacada");
+				}
+			}));
+    		
     		System.out.println("Img: "+captcha.getImage());
     		System.out.println("Viewstate: "+captcha.getViewstate());
             image = decodeToImage(captcha.getImage());

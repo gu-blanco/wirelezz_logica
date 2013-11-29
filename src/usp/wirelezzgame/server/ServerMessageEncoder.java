@@ -56,8 +56,6 @@ public class ServerMessageEncoder {
 		JSONObject jog = new JSONObject();
 		jog.put("idJogador",new Integer(j.getID()));
 		jog.put("idTime",new Integer(j.getTime()));
-		
-
 		return toJsonMessage(5,jog);
 	}
 	

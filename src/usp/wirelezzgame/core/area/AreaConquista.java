@@ -37,11 +37,17 @@ public class AreaConquista extends Area {
 		return mTimeID;
 	}
 
-	// deve ser chamado somente no servidor
+	// deve ser chamado somente no Servidor
 	public void conquistaTimeID(int mTimeID) {
 		this.mTimeID = mTimeID;
 		mNivelDefesa = mDefesaAcumulada/2;
 		mDefesaAcumulada = mNivelDefesa;
+	}
+
+	// deve ser chamado somente no Cliente
+	public void setTimeID(int idTime) {
+		this.mTimeID = idTime;
+		
 	}
 	
 }
