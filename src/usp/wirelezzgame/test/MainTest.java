@@ -1,6 +1,5 @@
 package usp.wirelezzgame.test;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -11,63 +10,63 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 import usp.wirelezzgame.client.ClientMessageDecoder;
 import usp.wirelezzgame.client.ClientMessageEncoder;
 import usp.wirelezzgame.core.Jogador;
-import usp.wirelezzgame.core.Partida;
 import usp.wirelezzgame.core.Time;
 import usp.wirelezzgame.core.acao.AcaoAtacarArea;
 import usp.wirelezzgame.core.acao.AcaoCallback;
 import usp.wirelezzgame.core.area.Area;
 import usp.wirelezzgame.core.area.AreaConquista;
 import usp.wirelezzgame.core.captcha.Captcha;
-import usp.wirelezzgame.server.ServerMessageCallback;
-import usp.wirelezzgame.server.ServerMessageDecoder;
 import usp.wirelezzgame.server.ServerMessageEncoder;
+import usp.wirelezzgame.server.WirelezzServer;
+import brorlandi.server.ClientSessionInterface;
 
 public class MainTest {
 	
 	public static void main(String[] args) {
 		client();
-		
+		//server();
 	}
 
 	public static void client(){
 		String s;
-		ServerMessageCallback smc = new ServerCallback();
-		ServerMessageDecoder smd = new ServerMessageDecoder(smc);
+		//ServerMessageCallback smc = new ServerCallback();
+		//ServerMessageDecoder smd = new ServerMessageDecoder(smc);
 		System.out.println("---dadosJogador--");
 		s = ClientMessageEncoder.dadosJogador("Bruno","Bruno Orlandi","brorlandi");
 		System.out.println(s);
-		smd.parse(s);
+		//smd.parse(null,s);
 		System.out.println("---timeJogador--");
-		s = ClientMessageEncoder.timeJogador(0);
+		s = ClientMessageEncoder.timeJogador(1);
 		System.out.println(s);
-		smd.parse(s);
+		//smd.parse(null,s);
 		System.out.println("---interagirArea--");
-		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.ATACAR_AREA);
+		s = ClientMessageEncoder.interagirArea(new AreaConquista("teste",1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.ATACAR_AREA);
 		System.out.println(s);
-		smd.parse(s);
-		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.DEFENDER_AREA);
-		smd.parse(s);
-		s = ClientMessageEncoder.interagirArea(new AreaConquista(1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.RECUPERAR_PONTOS_AREA);
-		smd.parse(s);
+		//smd.parse(null,s);
+		s = ClientMessageEncoder.interagirArea(new AreaConquista("teste",1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.DEFENDER_AREA);
+		System.out.println(s);
+		//smd.parse(null,s);
+		s = ClientMessageEncoder.interagirArea(new AreaConquista("teste",1.0,1.0,1.0,10),1.0,1.0,ClientMessageEncoder.RECUPERAR_PONTOS_AREA);
+		System.out.println(s);
+		//smd.parse(null,s);
 		System.out.println("---responderCaptcha--");
 		s = ClientMessageEncoder.responderCaptcha(0, "bla bla");
 		System.out.println(s);
-		smd.parse(s);
-		System.out.println("---responderCaptcha--");
+		//smd.parse(null,s);
+		System.out.println("---mensagemChatTodos--");
 		s = ClientMessageEncoder.mensagemChatTodos("Ze chat");
 		System.out.println(s);
-		smd.parse(s);
-		System.out.println("---responderCaptcha--");
+		//smd.parse(null,s);
+		System.out.println("---mensagemChatTodos--");
 		s = ClientMessageEncoder.mensagemChatTime("Ze chat");
 		System.out.println(s);
-		smd.parse(s);
+		//smd.parse(null,s);
 		
 		
 	}
@@ -80,7 +79,7 @@ public class MainTest {
 		cmd.parse(s);
 		
 		
-		Partida p = new Partida();
+		WirelezzServer p = new WirelezzServer();
 
 		Time t = new Time("Alpha", Time.Cor.VERMELHO);		
 		int tid = p.addNewTime(t);
@@ -103,15 +102,15 @@ public class MainTest {
 		System.out.println(s);
 		cmd.parse(s);
 		
-		AreaConquista a = new AreaConquista(1.0, 1.0, 1.0, 5);
+		AreaConquista a = new AreaConquista("teste",1.0, 1.0, 1.0, 5);
 		p.addNewArea(a);
 		a.alterarNivelDefesa(15);
 		a.alterarNivelDefesa(-10);
 		a.setTimeID(t.getID());
 		
-		a = new AreaConquista(2.0, 2.0, 2.0, 5);
+		a = new AreaConquista("teste",2.0, 2.0, 2.0, 5);
 		p.addNewArea(a);
-		a = new AreaConquista(3.0, 3.0, 3.0, 5);
+		a = new AreaConquista("teste",3.0, 3.0, 3.0, 5);
 		p.addNewArea(a);
 		
 		s = ServerMessageEncoder.areasData(p.getAreas());		
@@ -288,29 +287,34 @@ class ImageComponent extends JComponent{
             //System.out.println(imgstr);
              */
         	
-    		captcha = new Captcha(new AcaoAtacarArea(new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista(1.0, 1.0, 5.0, 10), new AcaoCallback() {
-				
+    		captcha = new Captcha(new AcaoAtacarArea(null, new Jogador("Bruno", "TeStE", "aaa"),new AreaConquista("teste",1.0, 1.0, 5.0, 10), new AcaoCallback() {
+
 				@Override
-				public void recuperouPontosRecurso(Jogador j) {
-					System.out.println("recuperouPontosRecurso");
+				public void areaAtacada(ClientSessionInterface client, Area a,
+						Jogador j) {
+					System.out.println("areaAtacada");
 					
 				}
-				
+
 				@Override
-				public void areaDefendida(Area a, Jogador j) {
-					System.out.println("areaDefendida");
-					
-				}
-				
-				@Override
-				public void areaConquistada(Area a, Jogador j) {
+				public void areaConquistada(ClientSessionInterface client,
+						Area a, Jogador j, int timePerdedor) {
 					System.out.println("areaConquistada");
 					
 				}
-				
+
 				@Override
-				public void areaAtacada(Area a, Jogador j) {
-					System.out.println("areaAtacada");
+				public void areaDefendida(ClientSessionInterface client,
+						Area a, Jogador j) {
+					System.out.println("areaDefendida");
+					
+				}
+
+				@Override
+				public void recuperouPontosRecurso(
+						ClientSessionInterface client,Area a, Jogador j) {
+					System.out.println("recuperouPontosRecurso");
+					
 				}
 			}));
     		

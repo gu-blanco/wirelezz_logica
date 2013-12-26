@@ -5,11 +5,13 @@ public abstract class Area {
 	protected double mLatitude;
 	protected double mLongitude;
 	protected double mRaio;
-	
-	public Area(double mLatitude, double mLongitude, double mRaio) {
+	protected String mNome;
+
+	public Area(String nome, double mLatitude, double mLongitude, double mRaio) {
 		this.mLatitude = mLatitude;
 		this.mLongitude = mLongitude;
 		this.mRaio = mRaio;
+		mNome = nome;
 	}
 
 	public void setID(int ID){
@@ -42,5 +44,13 @@ public abstract class Area {
 	
 	public double getRaio(){
 		return this.mRaio;
+	}
+	
+	public String getNome() {
+		return mNome;
+	}
+
+	public void setNome(String mNome) {
+		this.mNome = mNome;
 	}
 }

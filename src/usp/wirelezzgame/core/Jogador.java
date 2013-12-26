@@ -14,7 +14,7 @@ public class Jogador {
 		this.mPrimeiroNome = mPrimeiroNome;
 		this.mNomeCompleto = mNomeCompleto;
 		this.mFacebookId = mFacebookId;
-		this.mPontosRecurso = 0;
+		this.mPontosRecurso = 5;
 		this.mTimeID = 0;
 	}
 	public String getPrimeiroNome() {

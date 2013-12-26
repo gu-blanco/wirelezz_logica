@@ -161,6 +161,7 @@ public class ServerMessageEncoder {
 	private static JSONObject areaEncode(Area a){
 		JSONObject obj = new JSONObject();
 		obj.put("idArea", new Integer(a.getID()));
+		obj.put("nome",a.getNome());
 		obj.put("latitude", new Double(a.getLatitude()));
 		obj.put("longitude", new Double(a.getLongitude()));
 		obj.put("raio", new Double(a.getRaio()));
