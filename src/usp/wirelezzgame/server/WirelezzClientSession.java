@@ -151,7 +151,7 @@ public class WirelezzClientSession implements ClientSessionCallbackInterface, Se
 			aa = new AcaoDefenderArea(client, j, ac, this);
 		break;
 		case ClientMessageEncoder.RECUPERAR_PONTOS_AREA:
-			aa = new AcaoRecuperarRecursos(client, j, ac, this);
+			aa = new AcaoRecuperarRecursos(client, j, ac,this);
 		break;
 		}
 		Captcha c = new Captcha(aa);
