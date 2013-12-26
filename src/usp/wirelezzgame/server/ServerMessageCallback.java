@@ -1,12 +1,14 @@
 package usp.wirelezzgame.server;
 
+import brorlandi.server.ClientSessionInterface;
+
 public interface ServerMessageCallback {
 	
-	void dadosJogador(String nomeJogador, String nomeCompleto, String facebookID);
-	void timeJogador(Integer idTime);
-	void interagirArea(Integer idArea, Integer latitude, Integer longitude, Integer acao);
-	void responderCaptcha(Integer idCaptcha, String resposta);
-	void mensagemChatTodos(String mensagem);
-	void mensagemChatTime(String mensagem);
+	void dadosJogador(ClientSessionInterface client, String nomeJogador, String nomeCompleto, String facebookID);
+	void timeJogador(ClientSessionInterface client, int idTime);
+	void interagirArea(ClientSessionInterface client, int idArea, double latitude, double longitude, int acao);
+	void responderCaptcha(ClientSessionInterface client, int idCaptcha, String resposta);
+	void mensagemChatTodos(ClientSessionInterface client, String mensagem);
+	void mensagemChatTime(ClientSessionInterface client, String mensagem);
 
 }

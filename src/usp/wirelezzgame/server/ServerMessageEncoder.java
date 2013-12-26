@@ -56,8 +56,6 @@ public class ServerMessageEncoder {
 		JSONObject jog = new JSONObject();
 		jog.put("idJogador",new Integer(j.getID()));
 		jog.put("idTime",new Integer(j.getTime()));
-		
-
 		return toJsonMessage(5,jog);
 	}
 	
@@ -163,6 +161,7 @@ public class ServerMessageEncoder {
 	private static JSONObject areaEncode(Area a){
 		JSONObject obj = new JSONObject();
 		obj.put("idArea", new Integer(a.getID()));
+		obj.put("nome",a.getNome());
 		obj.put("latitude", new Double(a.getLatitude()));
 		obj.put("longitude", new Double(a.getLongitude()));
 		obj.put("raio", new Double(a.getRaio()));

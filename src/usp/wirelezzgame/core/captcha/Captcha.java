@@ -23,7 +23,7 @@ public class Captcha {
 			JSONParser parser=new JSONParser();
 			Object obj=parser.parse(json);
 			JSONObject request=(JSONObject)obj;
-			long status = (long) request.get("status");
+			long status = (Long) request.get("status");
 			//System.out.println(request.get("message"));
 			if(status == 0) //sem erros
 			{
@@ -49,7 +49,7 @@ public class Captcha {
 			JSONParser parser=new JSONParser();
 			Object obj=parser.parse(json);
 			JSONObject request=(JSONObject)obj;
-			long status = (long) request.get("status");
+			long status = (Long) request.get("status");
 			//System.out.println(request.get("message"));
 			if(status == 0) //acertou
 			{

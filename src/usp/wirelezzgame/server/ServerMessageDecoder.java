@@ -1,8 +1,12 @@
 package usp.wirelezzgame.server;
 
+import java.io.IOException;
+
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import brorlandi.server.ClientSessionInterface;
 
 public class ServerMessageDecoder {
 	
@@ -12,90 +16,112 @@ public class ServerMessageDecoder {
 		mCallback = callback;
 	}
 	
-	public void parse(String message){
-		Object obj=JSONValue.parse(message);
-		JSONObject json = (JSONObject) obj;
-		long code = (long) json.get("code");
-		JSONAware data = (JSONAware) json.get("data");
-		parseMessage(new Long(code).intValue(), data);
+	public void parse(ClientSessionInterface client, String message){
+		try{
+			Object obj=JSONValue.parse(message);
+			
+			JSONObject json = (JSONObject) obj;
+			long code = (Long) json.get("code");
+			JSONAware data = (JSONAware) json.get("data");
+			parseMessage(client,new Long(code).intValue(), data);
+		}catch(Exception e){
+			client.sendMessage(message+" | VOCE ESTA PERDIDO? ESTE SERVIDOR NAO EH PRA VOCE! CAIA FORA DAQUI!!");
+			System.out.println("Bad Request: "+message);
+			e.printStackTrace();
+			try {
+				client.getSocket().close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return;
+		}
 	}
 	
-	private void parseMessage(int code, JSONAware data){
+	private void parseMessage(ClientSessionInterface client, int code, JSONAware data){
 		switch(code){
 			case 1:
-				dadosJogador(data);
+				dadosJogador(client, data);
+				break;
 			case 4:
-				timeJogador(data);
+				timeJogador(client, data);
+				break;
 			case 7:
-				interagirArea(data);
+				interagirArea(client, data);
+				break;
 			case 9:
-				responderCaptcha(data);
+				responderCaptcha(client, data);
+				break;
 			case 17:
-				mensagemChatTodos(data);
+				mensagemChatTodos(client, data);
+				break;
 			case 18:
-				mensagemChatTime(data);
+				mensagemChatTime(client, data);
 			break;
 		}
 	}
 	
-	//Recebe as informações do jogador e retorna um objeto jogador com esses dados
-	public void dadosJogador(JSONAware data){
+	//Recebe as informações do jogador
+	public void dadosJogador(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject)data;
 		
-		String nomeJogador = (String) obj.get("nomeJogador");		
+		String nomeJogador = (String) obj.get("nomeJogador");
+		if(nomeJogador == null || nomeJogador.equals("null")){
+			return; // bugou o cliente e enviou null
+		}
 		String nomeCompleto = (String) obj.get("nomeCompleto");
 		String facebookID = (String) obj.get("facebookID");
 		
-		mCallback.dadosJogador(nomeJogador, nomeCompleto, facebookID);
+		mCallback.dadosJogador(client, nomeJogador, nomeCompleto, facebookID);
 	}
 	
 	//Recebe informações sobre o time que o jogador irá participar
-	public void timeJogador(JSONAware data){
+	public void timeJogador(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject)data;
 		
-		Integer idTime = (Integer) obj.get("idTime");
+		int idTime = new Long((Long)obj.get("idTime")).intValue();
 		
-		mCallback.timeJogador(idTime);
+		mCallback.timeJogador(client, idTime);
 	}
 	
 	//O jogador tentar interagir com uma área
-	public void interagirArea(JSONAware data){
+	public void interagirArea(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
-		Integer idArea = (Integer) obj.get("idArea");
-		Integer latitude = (Integer) obj.get("latitude");
-		Integer longitude = (Integer) obj.get("longitude");
-		Integer acao = (Integer) obj.get("acao");
+		int idArea = new Long((Long)obj.get("idArea")).intValue();
+		double latitude = (Double) obj.get("latitude");
+		double longitude = (Double) obj.get("longitude");
+		int acao = new Long((Long)obj.get("acao")).intValue();
 		
-		mCallback.interagirArea(idArea, latitude, longitude, acao);		
+		mCallback.interagirArea(client, idArea, latitude, longitude, acao);		
 	}
 	
 	//Jogador responde um captcha
-	public void responderCaptcha(JSONAware data){
+	public void responderCaptcha(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
-		Integer idCaptcha = (Integer) obj.get("idCaptcha");
+		int idCaptcha = new Long((Long)obj.get("idCaptcha")).intValue();
 		String resposta = (String) obj.get("resposta");
 		
-		mCallback.responderCaptcha(idCaptcha, resposta);
+		mCallback.responderCaptcha(client, idCaptcha, resposta);
 	}
 	
 	//Jogador envia uma mensagem para todos
-	public void mensagemChatTodos(JSONAware data){
+	public void mensagemChatTodos(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
 		String mensagem = (String ) obj.get("mensagem");
 		
-		mCallback.mensagemChatTodos(mensagem);
+		mCallback.mensagemChatTodos(client, mensagem);
 	}
 	
 	//Jogador envia uma mensagem para o time
-	public void mensagemChatTime(JSONAware data){
+	public void mensagemChatTime(ClientSessionInterface client, JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		
 		String mensagem = (String) obj.get("mensagem");
 		
-		mCallback.mensagemChatTime(mensagem);
+		mCallback.mensagemChatTime(client, mensagem);
 	}
 	
 }

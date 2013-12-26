@@ -25,7 +25,7 @@ public class ClientMessageDecoder {
 	public void parse(String message){
 		Object obj=JSONValue.parse(message);
 		JSONObject json = (JSONObject) obj;
-		long code = (long) json.get("code");
+		long code = (Long) json.get("code");
 		JSONAware data = (JSONAware) json.get("data");
 		parseMessage(new Long(code).intValue(), data);
 	}
@@ -41,9 +41,39 @@ public class ClientMessageDecoder {
 			case 3:
 				areasData(data);
 			break;
+			case 5:
+				jogadorIdTime(data);
+			break;
+			case 6:
+				novoJogador(data);
+			break;
+			case 10:
+				mensagemCaptcha(data);
+			break;
+			case 11:
+				mensagemResultadoCaptcha(data);
+			break;
+			case 12:
+				mensagemPontosRecurso(data);
+			break;
+			case 13:
+				mensagemAlteraDefesaArea(data);
+			break;
+			case 14:
+				mensagemAreaConquistada(data);
+			break;
+			case 15:
+				mensagemVitoriaTime(data);
+			break;
+			case 16:
+				mensagemJogadorDesconectou(data);
+			break;
+			case 19:
+				mensagemChat(data);
+			break;
 		}
 	}
-	
+
 	private void nomeServer(JSONAware data){
 		JSONObject obj = (JSONObject) data;
 		String server = (String) obj.get("nomeServidor");
@@ -72,20 +102,98 @@ public class ClientMessageDecoder {
 		mCallback.areasData(areas);
 	}
 
+	private void jogadorIdTime(JSONAware data){
+		JSONObject obj = (JSONObject)data;
+		int idJogador = new Long((Long) obj.get("idJogador")).intValue();
+		int idTime = new Long((Long) obj.get("idTime")).intValue();
+		mCallback.jogadorIdTime(idJogador,idTime);
+	}
+	
+	private void novoJogador(JSONAware data){
+		JSONObject obj = (JSONObject)data;
+		Jogador j = parseJogador(obj);
+		int idTime = new Long((Long) obj.get("idTime")).intValue();// fica faltando o time
+		j.setTime(idTime);
+		mCallback.novoJogador(j);
+	}
+	
+	private void mensagemCaptcha(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idCaptcha = new Long((Long) obj.get("idCaptcha")).intValue();
+		String image = (String) obj.get("imagem");
+		mCallback.mensagemCaptcha(idCaptcha, image);
+	}
+	
+	private void mensagemResultadoCaptcha(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		boolean res = (Boolean) obj.get("resultado");
+		mCallback.mensagemResultadoCaptcha(res);
+	}
+	
+	private void mensagemPontosRecurso(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int pontos = new Long((Long) obj.get("pontos")).intValue();
+		int modo = new Long((Long) obj.get("modo")).intValue();
+		mCallback.mensagemPontosRecurso(pontos, modo);
+	}
+
+	private void mensagemAlteraDefesaArea(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idArea = new Long((Long) obj.get("idArea")).intValue();
+		int defesa = new Long((Long) obj.get("defesa")).intValue();
+		int acao = new Long((Long) obj.get("acao")).intValue();
+		int idJogador = new Long((Long) obj.get("idJogador")).intValue();
+		mCallback.mensagemAlteraDefesaArea(idArea, defesa, acao, idJogador);
+		
+	}
+
+	private void mensagemAreaConquistada(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idArea = new Long((Long) obj.get("idArea")).intValue();
+		int defesa = new Long((Long) obj.get("defesa")).intValue();
+		int idTime = new Long((Long) obj.get("idTime")).intValue();
+		int idJogador = new Long((Long) obj.get("idJogador")).intValue();
+		mCallback.mensagemAreaConquistada(idArea, defesa, idTime, idJogador);
+	}
+
+	private void mensagemVitoriaTime(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idTime = new Long((Long) obj.get("idTime")).intValue();
+		mCallback.mensagemVitoriaTime(idTime);
+	}
+
+	private void mensagemJogadorDesconectou(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idJogador = new Long((Long) obj.get("idJogador")).intValue();
+		mCallback.mensagemJogadorDesconectou(idJogador);
+	}
+
+	private void mensagemChat(JSONAware data) {
+		JSONObject obj = (JSONObject) data;
+		int idJogador = new Long((Long) obj.get("idJogador")).intValue();
+		int tipo = new Long((Long) obj.get("tipo")).intValue();	
+		String mensagem = (String) obj.get("mensagem");
+		mCallback.mensagemChat(idJogador,tipo,mensagem);
+	}
+	
+	
+
 	private Area parseArea(JSONObject obj) {
-		int idArea = new Long((long) obj.get("idArea")).intValue();
-		double latitude = (double) obj.get("latitude");
-		double longitude = (double) obj.get("longitude");
-		double raio = (double) obj.get("raio");
+		int idArea = new Long((Long) obj.get("idArea")).intValue();
+		double latitude = (Double) obj.get("latitude");
+		double longitude = (Double) obj.get("longitude");
+		double raio = (Double) obj.get("raio");
+		String nome = (String) obj.get("nome");
 		String tipo = (String) obj.get("tipo");
 		
-		Area a;
+		Area a = null;
 		
 		if(tipo.equals(AreaConquista.TIPO)){
-			int defesa = new Long((long) obj.get("defesa")).intValue();
-			AreaConquista ac = new AreaConquista(latitude, longitude, raio, defesa);
-			int idTime = new Long((long) obj.get("idTime")).intValue();
+			int defesa = new Long((Long) obj.get("defesa")).intValue();
+			AreaConquista ac = new AreaConquista(nome,latitude, longitude, raio, defesa);
+			int idTime = new Long((Long) obj.get("idTime")).intValue();
 			ac.setTimeID(idTime);
+			ac.setID(idArea);
 			a = (Area) ac;
 		}		
 		
@@ -94,9 +202,9 @@ public class ClientMessageDecoder {
 
 	private Time parseTime(JSONObject obj) {
 		String nome = (String) obj.get("nomeTime");
-		int cor = new Long((long) obj.get("cor")).intValue();
+		int cor = new Long((Long) obj.get("cor")).intValue();
 		Time t = new Time(nome, Cor.values()[cor]);
-		t.setID(new Long((long) obj.get("idTime")).intValue());
+		t.setID(new Long((Long) obj.get("idTime")).intValue());
 		
 		JSONArray jogadoresArray = (JSONArray) obj.get("jogadores");
 		Jogador jogador;
@@ -110,7 +218,7 @@ public class ClientMessageDecoder {
 
 	private Jogador parseJogador(JSONObject obj) {
 		Jogador j;
-		int id = new Long((long) obj.get("idJogador")).intValue();
+		int id = new Long((Long) obj.get("idJogador")).intValue();
 		String nome = (String) obj.get("nomeJogador");
 		String nomeCompleto = (String) obj.get("nomeCompleto");
 		String fbid = (String) obj.get("facebookID");
